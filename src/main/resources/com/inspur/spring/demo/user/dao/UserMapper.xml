@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inspur.spring.demo.user.dao.UserMapper">
+	<resultMap type="User" id="userMap">
+		<id property="id" column="id" />
+		<result property="userName" column="username" />
+		<result property="password" column="password" />
+		<result property="gender" column="gender" />
+		<result property="email" column="email" />
+		<result property="ctime" column="ctime" />
+	</resultMap>
+	<select id="getAll" resultMap="userMap">
+		SELECT * FROM USER
+	</select>
+
+	<select id="getUserByName" parameterType="String" resultMap="userMap">
+		SELECT * FROM USER WHERE username LIKE #{userName}
+	</select>
+
+	<select id="getUserById" parameterType="String" resultMap="userMap">
+		SELECT * FROM USER WHERE id = #{id}
+	</select>
+
+	<delete id="deleteUser" parameterType="String">
+		DELETE FROM USER WHERE ID = #{id}
+	</delete>
+
+	<update id="updateUser" parameterType="User">
+		UPDATE USER
+		<set>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="gender != null">
+				gender = #{gender},
+			</if>
+			<if test="email != null">
+				email = #{email}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<insert id="insertUser" parameterType="User">
+		INSERT INTO USER(id, username, password, gender, email, ctime)
+		VALUES(#{id}, #{userName}, #{password}, #{gender}, #{email}, #{ctime});
+	</insert>
+</mapper>
